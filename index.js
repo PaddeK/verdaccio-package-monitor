@@ -20,6 +20,55 @@ const
 
 class Monitor
 {
+    /**
+     * @typedef {object} Config
+     * @property {object} middlewares
+     */
+    /**
+     * @typedef {object} Options
+     * @property {object} logger
+     */
+    /**
+     * @typedef {object} Package
+     * @property {array} versions
+     * @property {object} tags
+     * @property {object} time
+     * @property {string} name
+     */
+    /**
+     * @typedef {object} PackageStorage
+     * @property {function} readPackage
+     */
+    /**
+     * @typedef {object} StoragePlugin
+     * @property {object} localStorage
+     * @property {Storage} localStorage.localData
+     */
+    /**
+     * @typedef {object} Storage
+     * @property {function<PackageStorage>} getPackageStorage
+     */
+    /**
+     * @typedef {object} later
+     * @property {function} parse
+     * @property {function} schedule
+     * @property {function} setInterval
+     */
+    /**
+     * @typedef {object} router
+     * @property {function} get
+     */
+    /**
+     * @typedef {object} Version
+     * @property {array} t
+     * @property {string} v
+     * @property {string} d
+     */
+
+    /**
+     * @param {Config} config
+     * @param {Options} options
+     */
     constructor (config, options)
     {
         this._logger = options.logger;
@@ -46,17 +95,35 @@ class Monitor
         mustache.parse(this._mainTpl);
     }
 
+    /**
+     * @param {Version} a
+     * @param {Version} b
+     * @return {number}
+     * @private
+     */
     static _sortVerions (a, b)
     {
         let t = b.t.length - a.t.length;
         return t === 0 ? Monitor._strCmp(a, b) : t;
     }
 
+    /**
+     * @param {Version} a
+     * @param {Version} b
+     * @return {number}
+     * @private
+     */
     static _strCmp (a, b)
     {
         return b.v.localeCompare(a.v);
     }
 
+    /**
+     * @param {Package} pkg
+     * @param {number} max
+     * @return {Version[]}
+     * @private
+     */
     _reduceVersions (pkg, max)
     {
         let initial = Array(max).fill({v:'', t:[]}),
@@ -70,6 +137,13 @@ class Monitor
         return pkg.versions.reduce(red, initial).sort(Monitor._sortVerions).slice(0, max).sort(Monitor._strCmp);
     }
 
+    /**
+     * @param {Package} pkg
+     * @param {string} scp
+     * @param {number} max
+     * @return {{versions: Version[], hasVersions: boolean, audit: string, name: string, modified: string, latest: string}}
+     * @private
+     */
     _prepTplData (pkg, scp, max)
     {
         return {
@@ -82,6 +156,15 @@ class Monitor
         };
     }
 
+    /**
+     * @param {Storage} storage
+     * @param {array} cards
+     * @param {string} scope
+     * @param {number} max
+     * @param {string} packageName
+     * @param {function} callback
+     * @private
+     */
     _prepPkg (storage, cards, scope, max, packageName, callback)
     {
         storage.getPackageStorage(packageName).readPackage(packageName, (err, pkg) => {
@@ -99,6 +182,13 @@ class Monitor
         });
     }
 
+    /**
+     * @param {object} req
+     * @param {object} res
+     * @param {array} cards
+     * @param {Error|null} err
+     * @private
+     */
     _respond (req, res, cards, err)
     {
         if (err) {
@@ -116,6 +206,7 @@ class Monitor
 
         moment.locale(locale);
 
+        // noinspection JSUnusedGlobalSymbols
         data = {
             cards,
             date: function() {return (text, render) => moment(render(text)).format('L')},
@@ -132,16 +223,34 @@ class Monitor
         res.end(mustache.render(this._mainTpl, data, this._partials));
     }
 
+    /**
+     * @param {object} req
+     * @return {string}
+     * @private
+     */
     _getScope (req)
     {
         return req.params.scope && req.params.scope.length > 1 ? req.params.scope : this._scope;
     }
 
+    /**
+     * @param {object} req
+     * @return {{schedules, error, exceptions}}
+     * @private
+     */
     _getSchedule (req)
     {
         return later.parse.text(req.query.audit || this._schedule);
     }
 
+    /**
+     * @param {object} req
+     * @param {object} res
+     * @param {Storage} store
+     * @param {Error|null} err
+     * @param {string[]} pkgs
+     * @private
+     */
     _getPackages (req, res, store, err, pkgs)
     {
         let tmp = [],
@@ -164,6 +273,12 @@ class Monitor
         async.eachSeries(pkgs, this._prepPkg.bind(this, store, tmp, scp, max), this._respond.bind(this, req, res, tmp));
     }
 
+    /**
+     * @param {Storage} storage
+     * @param {string} packageName
+     * @param {function} callback
+     * @private
+     */
     _runAudits (storage, packageName, callback)
     {
         storage.getPackageStorage(packageName).readPackage(packageName, (err, pkg) => {
@@ -174,6 +289,12 @@ class Monitor
         });
     }
 
+    // noinspection JSUnusedGlobalSymbols
+    /**
+     * @param {object} app
+     * @param {object} auth
+     * @param {StoragePlugin} storagePlugin
+     */
     register_middlewares (app, auth, storagePlugin)
     {
         let store = storagePlugin.localStorage.localData;
