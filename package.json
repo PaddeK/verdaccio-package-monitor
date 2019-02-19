@@ -4,6 +4,9 @@
   "description": "stats plugin for verdaccio",
   "main": "index.js",
   "scripts": {},
+  "engines": {
+    "node": ">=10.0.0"
+  },
   "license": "ISC",
   "dependencies": {
     "async": "^2.6.2",
