@@ -14,7 +14,7 @@ middleware plugin to monitor package versions, tags and npm audit result
 ```
 
 ## Usage
-To enable it you need to add this to your configuration file.
+To enable it you need to add this to your configuration file.  
 Config values shown below reflect the defaults.
 ```
 middlewares:
@@ -32,7 +32,7 @@ middlewares:
 ```
 ## Disclaimer
 
-This plugin is tailored to specific needs i had but should be easy to adjust for yours.
+This plugin is tailored to specific needs i had but should be easy to adjust for yours.  
 Pull requests for features/bugfixes are welcome!
 
 PS. Yeah i know... it's kinda hacky :see_no_evil: :hear_no_evil: :speak_no_evil:
