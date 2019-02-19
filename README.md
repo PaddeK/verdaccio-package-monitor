@@ -1,5 +1,5 @@
 # verdaccio-package-monitor
-middleware plugin to monitor package versions, tags and npm audit result
+Middleware plugin to monitor package versions, tags and npm audit result.
 
 [![verdaccio (latest)](https://img.shields.io/npm/v/verdaccio-package-monitor/latest.svg)](https://www.npmjs.com/package/verdaccio-package-monitor)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
