@@ -1,0 +1,16 @@
+<div class="row">
+    <div class="col-sm col-sm-10 col-sm-first">
+        <h3 class="ellipsis">
+            {{name}}
+            <small>
+                <span>Modified:</span><span class="responsive-margin"></span>
+                <span class="icon-calendar"></span>{{#date}}{{modified}}{{/date}}
+                <span class="responsive-margin"><em>{{#time}}{{modified}}{{/time}}</em></span>
+            </small>
+        </h3>
+    </div>
+    <div class="col-sm col-sm-2 col-sm-last">
+        <span class="icon-{{audit}} right top-margin"></span>
+        <h4><mark class="tag tertiary right">{{latest}}</mark></h4>
+    </div>
+</div>

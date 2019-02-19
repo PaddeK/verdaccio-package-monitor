@@ -1,0 +1,12 @@
+<div class="col-sm col-sm-3 hidden">
+    <div class="card shadowed fluid rounded">
+        <div class="section double-padded">
+            {{> card-top}}
+        </div>
+        {{#hasVersions}}
+        <div class="section">
+            {{> card-bottom}}
+        </div>
+        {{/hasVersions}}
+    </div>
+</div>

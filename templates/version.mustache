@@ -1,0 +1,15 @@
+<div class="row">
+    <div class="col-sm col-sm-2 col-sm-first">
+        <p><strong>{{v}}</strong></p>
+    </div>
+    <div class="col-sm col-sm-6">
+        <p><small class="responsive-margin">{{#t}}<mark class="tag">{{.}}</mark>{{/t}}</small></p>
+    </div>
+    <div class="col-sm col-sm-4 col-sm-last">
+        <p><small>
+            {{#v}}
+                <span class="icon-calendar"></span>{{#date}}{{d}}{{/date}}<em> {{#time}}{{d}}{{/time}}</em>
+            {{/v}}
+        </small></p>
+    </div>
+</div>

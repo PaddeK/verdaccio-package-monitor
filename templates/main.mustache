@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang = "en">
+    <head>
+        <meta charset = "UTF-8">
+        <title>{{title}}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body onload="init({{total}}, {{timer}})">
+        <style type="text/css" media="screen">{{{styles}}}</style>
+        <div id="cards" class="row">
+            {{#cards}}
+                {{> card}}
+            {{/cards}}
+        </div>
+        <footer class="sticky">
+            <div class="row">
+                <div class="col-sm col-sm-4 col-sm-first"></div>
+                <div class="col-sm col-sm-4">
+                    <p><strong><span id="page"></span>/{{total}}</strong></p>
+                </div>
+                <div class="col-sm col-sm-4 col-sm-last">
+                    <p><span class="right">Next Audit run:<em class="responsive-margin">{{nextAudit}}</em></span></p>
+                    <p><span class="right"><em class="responsive-margin"></em></span></p>
+                    <p><span class="right">Last Audit run:<em class="responsive-margin">{{lastAudit}}</em></span></p>
+                </div>
+            </div>
+        </footer>
+        <script>
+            function page(total) {
+                let page = Number(location.hash.slice(1));
+                page = isNaN(page) || page === 0 || page > total ? 1 : page;
+                document.getElementById('page').innerHTML = page.toString();
+                for (let i=0,c; i < total * 12; i++) {
+                    c = document.getElementById('cards').children.item(i);
+                    if (c && i >= (page - 1) * 12 && i < page * 12) {
+                        c.classList.remove('hidden');
+                    } else if (c) {
+                        c.classList.add('hidden');
+                    }
+                }
+                return page;
+            }
+            function init(total, timer) {
+                let p = Number(location.hash.slice(1));
+                window.onhashchange = page.bind(null, total);
+                if (isNaN(p) || p === 0 || p > total) {
+                    location.hash = '1';
+                }
+                page(total);
+                if (timer === 0) {
+                    clearInterval(window.verdaccio_stats_interval || 0);
+                } else {
+                    window.verdaccio_stats_interval = setInterval(() => {
+                        location.hash = (page() % total) + 1;
+                        location.reload();
+                    }, timer);
+                }
+            }
+        </script>
+    </body>
+</html>
