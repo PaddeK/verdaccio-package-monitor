@@ -14,6 +14,7 @@ Middleware plugin to monitor package versions, tags and npm audit result.
 ```
 
 ## Usage
+
 To enable it you need to add this to your configuration file.  
 Config values shown below reflect the defaults.
 ```
