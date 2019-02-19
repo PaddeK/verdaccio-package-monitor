@@ -19,7 +19,7 @@ Config values shown below reflect the defaults.
 ```
 middlewares:
   package-monitor:
-    # Locale to use for moment date/time formating
+    # Locale to use for moment.js date/time formating
     locale: "de"
     # If scope is given only packages in given scope are monitored (scope gets stripped from package names)
     scope: ""
