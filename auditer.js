@@ -9,6 +9,7 @@ const
     NpmAudit = ['npm', ['audit', '--json']],
     fs = require('fs'),
     path = require('path'),
+    /** @var {function<Promise>} series */
     series = require('p-series'),
     exec = require('execa'),
     rimraf = require('rimraf');
@@ -16,10 +17,12 @@ const
 class Auditer
 {
     static get RATING_UNKNOWN () { return RATING_UNKNOWN; }
-    static get RATING_ERROR () { return RATING_ERROR; }
-    static get RATING_WARN () { return RATING_WARN; }
-    static get RATING_OK () { return RATING_OK; }
 
+    /**
+     * @param {object} logger
+     * @param {Package} packageJson
+     * @param {function} cb
+     */
     static getAuditReport (logger, packageJson, cb)
     {
         let tmpFolder = fs.mkdtempSync(path.join(__dirname, 'tmp'));
@@ -39,6 +42,8 @@ class Auditer
     }
 
     /**
+     * @param {object} logger
+     * @param {array} result
      * @private
      */
     static _calcResult (logger, result)
@@ -74,6 +79,7 @@ class Auditer
      */
     static _rating (v)
     {
+        // noinspection JSUnusedAssignment
         let map = {info: 1, low: 2, moderate: 4, high: 8, critical: 16},
             rating = Object.entries(map).reduce((p, [sev, fac]) => p += v[sev] === 0 ? 0 : fac, 0);
 
@@ -81,6 +87,8 @@ class Auditer
     }
 
     /**
+     * @param {Package} packageJson
+     * @param {string} tmpFolder
      * @private
      */
     static _copy (packageJson, tmpFolder)
@@ -93,6 +101,8 @@ class Auditer
     }
 
     /**
+     * @param {array} cmd
+     * @param {string} tmpFolder
      * @private
      */
     static _exec (cmd, tmpFolder)
@@ -101,6 +111,7 @@ class Auditer
     }
 
     /**
+     * @param {string} tmpFolder
      * @private
      */
     static _cleanup (tmpFolder)
