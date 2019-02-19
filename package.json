@@ -1,13 +1,42 @@
 {
   "name": "verdaccio-package-monitor",
   "version": "1.0.0",
-  "description": "stats plugin for verdaccio",
-  "main": "index.js",
-  "scripts": {},
+  "description": "verdaccio middleware plugin to monitor package version, tags and audit result",
+  "license": "MIT",
+  "author": {
+    "name": "Patrick Klös",
+    "email": "pkloes@web.de"
+  },
+  "bugs": {
+    "url": "https://github.com/PaddeK/XXX/issues"
+  },
+  "homepage": "https://github.com/PaddeK/XXX",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/PaddeK/XXX.git"
+  },
+  "maintainers": [
+    {
+      "name": "Patrick Klös",
+      "email": "pkloes@web.de"
+    }
+  ],
+  "keywords": [
+    "verdaccio",
+    "verdaccio plugin",
+    "plugin",
+    "middleware plugin",
+    "middleware",
+    "package monitoring",
+    "package",
+    "monitoring",
+    "stats"
+  ],
   "engines": {
     "node": ">=10.0.0"
   },
-  "license": "ISC",
+  "main": "index.js",
+  "scripts": {},
   "dependencies": {
     "async": "^2.6.2",
     "execa": "^1.0.0",
@@ -17,5 +46,13 @@
     "mustache": "^3.0.1",
     "p-series": "^1.1.0",
     "rimraf": "^2.6.3"
+  },
+  "eslintConfig": {
+    "env": {
+      "es6": true,
+      "node": true
+    },
+    "root": true,
+    "extends": "eslint:recommended"
   }
 }
