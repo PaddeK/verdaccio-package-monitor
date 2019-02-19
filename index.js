@@ -1,7 +1,6 @@
 'use strict';
 
 const
-    DefaultRoute = '/:scope/monitor',
     DefaultLocale = 'de',
     DefaultDelay = 15000,
     DefaultScope = '',
@@ -73,7 +72,6 @@ class Monitor
     {
         this._logger = options.logger;
         this._config = config.middlewares['package-monitor'];
-        this._route = this._config.route || DefaultRoute;
         this._locale = this._config.locale || DefaultLocale;
         this._delay = this._config.delay || DefaultDelay;
         this._scope = this._config.scope || DefaultScope;
@@ -299,7 +297,7 @@ class Monitor
     {
         let store = storagePlugin.localStorage.localData;
 
-        router.get(this._route, (req, res) => store.get(this._getPackages.bind(this, req, res, store)));
+        router.get('/:scope/monitor', (req, res) => store.get(this._getPackages.bind(this, req, res, store)));
 
         app.use('/', router);
     }
