@@ -33,6 +33,16 @@ middlewares:
     # later.js schedule (text parser is used) to specify interval of npm audit checks
     audit: "every 1 day at 03:00"
 ```
+If the plugin is enabled you can reach the monitoring page at:  
+`https://your.verdaccio.hostname/-/monitor`.
+  
+You can override almost all config parameters via query parameter or path and jump directly to pages with hash e.g.,    
+`https://your.verdaccio.hostname/@scope/monitor?timer=10000&max=3&locale=en&audit=on monday#2`  
+will show you all packages in scope @scope, flip through pages every 10 seconds, shows 3 version maximum, formats  
+date/time according to en locale, runs npm audit every monday and starts with page 2.
+
+**_Hint:_** with timer=0 you can stop the automatic page flipping
+
 ## Disclaimer
 
 This plugin is tailored to specific needs i had but should be easy to adjust for yours.  
