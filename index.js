@@ -72,6 +72,7 @@ class Monitor
     {
         this._logger = options.logger;
         this._config = config.middlewares['package-monitor'];
+        this._enabled = this._config.enabled || false;
         this._locale = this._config.locale || DefaultLocale;
         this._delay = this._config.delay || DefaultDelay;
         this._scope = this._config.scope || DefaultScope;
@@ -81,16 +82,18 @@ class Monitor
         this._mainTpl = readTpl('main');
         this._cache = new Map();
 
-        this._partials = {
-            'card-top': readTpl('card.top'),
-            'card-bottom': readTpl('card.bottom'),
-            version: readTpl('version'),
-            card: readTpl('card')
-        };
+        if (this._enabled) {
+            this._partials = {
+                'card-top': readTpl('card.top'),
+                'card-bottom': readTpl('card.bottom'),
+                version: readTpl('version'),
+                card: readTpl('card')
+            };
 
-        this._interval = null;
+            this._interval = null;
 
-        mustache.parse(this._mainTpl);
+            mustache.parse(this._mainTpl);
+        }
     }
 
     /**
@@ -297,9 +300,11 @@ class Monitor
     {
         let store = storagePlugin.localStorage.localData;
 
-        router.get('/:scope/monitor', (req, res) => store.get(this._getPackages.bind(this, req, res, store)));
+        if (this._enabled) {
+            router.get('/:scope/monitor', (req, res) => store.get(this._getPackages.bind(this, req, res, store)));
 
-        app.use('/', router);
+            app.use('/', router);
+        }
     }
 }
 

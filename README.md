@@ -20,6 +20,8 @@ Config values shown below reflect the defaults.
 ```
 middlewares:
   package-monitor:
+    # Enables the plugin - the only required config parameter
+    enabled: true
     # Locale to use for moment.js date/time formating
     locale: "de"
     # If scope is given only packages in given scope are monitored (scope gets stripped from package names)
